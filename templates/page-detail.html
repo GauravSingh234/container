@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }}</title>
+</head>
+<body>
+    <h1>{{ page.title }}</h1>
+
+    <div class="content-containers">
+        {% for container in containers %}
+            <div class="content-container">
+                <h2>{{ container.title }}</h2>
+
+                {% if container.content_type.model == 'teamsection' %}
+                    <div class="team-section">
+                        <h3>Team Members</h3>
+                        <ul>
+                            {% for team_section in container.content_object.team_sections.all %}
+                                <li>{{ team_section.title }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% elif container.content_type.model == 'slider' %}
+                    <div class="slider">
+                        <h3>Slider Content</h3>
+                        <p>{{ container.content }}</p>
+                    </div>
+                {% elif container.content_type.model == 'gallery' %}
+                    <div class="gallery">
+                        <h3>Gallery</h3>
+                        <p>{{ container.content }}</p>
+                    </div>
+                {% elif container.content_type.model == 'image' %}
+                    <div class="image">
+                        <h3>Image Content</h3>
+                        <img src="{{ container.content }}" alt="Image">
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>
