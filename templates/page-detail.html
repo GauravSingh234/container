@@ -23,6 +23,19 @@
                         </ul>
                     </div>
                 {% elif container.content_type.model == 'slider' %}
+                 <!-- Slider Section -->
+    <section id="slider">
+        <h2>Slider</h2>
+        <div>
+            {% for slider in sliders %}
+                <div class="slider-item">
+                    <img src="{{ slider.image.url }}" alt="{{ slider.title }}">
+                    <h3>{{ slider.title }}</h3>
+                    <p>{{ slider.subtitle }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
                     <div class="slider">
                         <h3>Slider Content</h3>
                         <p>{{ container.content }}</p>

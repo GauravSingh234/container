@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import User
 
 # Model 1: TeamMember
 class TeamMember(models.Model):
@@ -63,3 +64,58 @@ class ContentContainer(models.Model):
 
     def get_content_display(self):
         return self.content  # This could be extended to handle HTML content or specific rendering logic.
+
+
+# This is the Slider Model
+class Slider(models.Model):
+    title = models.CharField(max_length=200, help_text="Title for the slider item")
+    description = models.TextField(blank=True, help_text="Description for the slider item")
+    image = models.ImageField(upload_to='slider_images/', help_text="Upload the image for the slider")
+    link = models.URLField(blank=True, null=True, help_text="Optional link for the slider item")
+    is_active = models.BooleanField(default=True, help_text="Toggle to display or hide the slider")
+    created_at = models.DateTimeField(auto_now_add=True, help_text="Date and time when the slider item was created")
+    updated_at = models.DateTimeField(auto_now=True, help_text="Date and time when the slider item was last updated")
+
+    def __str__(self):
+        return self.title
+
+# This is a Card Model
+class Card(models.Model):
+    title = models.CharField(max_length=200, help_text="Title of the card")
+    subtitle = models.CharField(max_length=300, blank=True, help_text="Optional subtitle for the card")
+    image = models.ImageField(upload_to='card_images/', blank=True, null=True, help_text="Image for the card")
+    description = models.TextField(blank=True, help_text="Description or details for the card")
+    link = models.URLField(blank=True, null=True, help_text="Optional link associated with the card")
+    is_active = models.BooleanField(default=True, help_text="Toggle to display or hide the card")
+    created_at = models.DateTimeField(auto_now_add=True, help_text="Date and time when the card was created")
+    updated_at = models.DateTimeField(auto_now=True, help_text="Date and time when the card was last updated")
+
+    def __str__(self):
+        return self.title
+    
+#This is a Blog Model
+class Blog(models.Model):
+    STATUS_CHOICES = [
+        ('draft', 'Draft'),
+        ('published', 'Published'),
+    ]
+
+    title = models.CharField(max_length=255, help_text="Title of the blog post")
+    slug = models.SlugField(unique=True, help_text="Unique slug for the blog post (auto-generated or manually set)")
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_posts', help_text="Author of the blog post")
+    content = models.TextField(help_text="Main content of the blog post")
+    image = models.ImageField(upload_to='blog_images/', blank=True, null=True, help_text="Optional image for the blog post")
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft', help_text="Publication status of the blog post")
+    category = models.CharField(max_length=100, blank=True, help_text="Category or tag for the blog post")
+    published_at = models.DateTimeField(blank=True, null=True, help_text="Publication date and time of the blog post")
+    created_at = models.DateTimeField(auto_now_add=True, help_text="Date and time when the blog post was created")
+    updated_at = models.DateTimeField(auto_now=True, help_text="Date and time when the blog post was last updated")
+
+    class Meta:
+        ordering = ['-published_at']
+        verbose_name = "Blog Post"
+        verbose_name_plural = "Blog Posts"
+
+    def __str__(self):
+        return self.title
+ 
