@@ -1,0 +1,12 @@
+<section class="slider-section">
+    <h3>Slider Content</h3>
+    <div class="slider-wrapper">
+        {% for slider in sliders %}
+            <div class="slider-item">
+                <img src="{{ slider.image.url }}" alt="{{ slider.title }}">
+                <h4>{{ slider.title }}</h4>
+                <p>{{ slider.description }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</section>

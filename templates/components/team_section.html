@@ -1,0 +1,8 @@
+<section class="team-section">
+    <h3>Team Members</h3>
+    <ul>
+        {% for team_section in container.content_object.team_sections.all %}
+            <li>{{ team_section.title }}</li>
+        {% endfor %}
+    </ul>
+</section>
