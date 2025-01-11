@@ -33,7 +33,7 @@ class ContentContainerInline(admin.TabularInline):
 # Admin for ContentContainer
 @admin.register(ContentContainer)
 class ContentContainerAdmin(admin.ModelAdmin):
-    list_display = ('page',  'title', 'content', 'get_content_display','content_type')
+    list_display = ('page',  'title', 'content', 'get_content_display','content_type' ,'order' )
     search_fields = ('title', 'content')
     # list_filter = ('container_type',)
     # inlines=[ContentContainerInline]
@@ -76,7 +76,7 @@ class CardAdmin(admin.ModelAdmin):
 
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'status', 'published_at', 'created_at')
+    list_display = ('id','title', 'author', 'status', 'published_at', 'created_at')
     list_filter = ('status', 'created_at', 'published_at', 'author')
     search_fields = ('title', 'content', 'category')
     prepopulated_fields = {'slug': ('title',)}

@@ -5,12 +5,12 @@ from django.contrib.contenttypes.models import ContentType
 def page_detail(request, page_slug):
     # Get the Page by slug
     page = get_object_or_404(Page, slug=page_slug)
-
+    
     # Get all content containers for the page
     containers = ContentContainer.objects.filter(page=page)
-    cards = Card.objects.filter(is_active=True)
-    sliders = Slider.objects.filter(is_active=True)
-    blogs = Blog.objects.filter(status="published").order_by('-published_at')[:5]  # Fetch latest 5 blogs
+    cards = Card.objects.filter(is_active=True)[:1]
+    sliders = Slider.objects.filter(is_active=True)[:1]
+    blogs = Blog.objects.filter(status="published").order_by('-published_at')[:1]  # Fetch latest 5 blogs
     # print(containers,"///////////////")
 
     # Create a context to send the page and containers to the template
