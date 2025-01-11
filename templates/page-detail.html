@@ -1,86 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }}</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-        }
+{% extends 'base.html' %}
 
-        h1, h2, h3 {
-            color: #333;
-        }
+{% block title %} {{ page.title }} {% endblock %}
 
-        .content-container {
-            margin: 20px;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-        }
+{% block content %}
 
-        .blog, .card {
-            margin: 15px 0;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>{{ page.title }}</h1>
-    </header>
+<h1>{{ page.title }}</h1>
 
-    <main>
-        {% for container in containers %}
-            <div class="content-container">
-                <h2>{{ container.title }}</h2>
+<div class="content-containers">
+    {% for container in containers %}
+        <div class="content-container">
+            <h2>{{ container.title }}</h2>
+            <h1> {{container.container_type}} </h1>
 
-                {% if container.content_type.model == 'blog' %}
-                    <!-- Blog Section -->
-                    <div class="blog">
-                        <h3>{{ container.content_object.title }}</h3>
-                        <p>{{ container.content_object.description }}</p>
-                        <a href="{{ container.content_object.url }}">Read More</a>
-                    </div>
+            {% if container.content_type.model == 'teamsection' %}
+                {% include "components/team_section.html" %}
+            {% elif container.content_type.model == 'slider' %}
+                {% include "components/slider.html" %}
+            {% elif container.content_type.model == 'gallery' %}
+                {% include "components/gallery.html" %}
+            {% elif container.content_type.model == 'card' %}
+                {% include "components/card.html" %}
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
 
-                {% elif container.content_type.model == 'card' %}
-                    <!-- Card Section -->
-                    <div class="card">
-                        <h3>{{ container.content_object.title }}</h3>
-                        <p>{{ container.content_object.description }}</p>
-                    </div>
-
-                {% elif container.content_type.model == 'slider' %}
-                    <!-- Slider Section -->
-                    <div class="slider">
-                        <h3>{{ container.content_object.title }}</h3>
-                        <img src="{{ container.content_object.image.url }}" alt="{{ container.content_object.title }}">
-                        <p>{{ container.content_object.description }}</p>
-                    </div>
-
-                {% elif container.content_type.model == 'teamsection' %}
-                    <!-- Team Section -->
-                    <div class="team-section">
-                        <h3>Team Members</h3>
-                        <ul>
-                            {% for member in container.content_object.team_members.all %}
-                                <li>{{ member.name }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-
-                {% else %}
-                    <!-- Default Content -->
-                    <p>{{ container.content_object }}</p>
-                {% endif %}
-            </div>
-        {% endfor %}
-    </main>
-</body>
-</html>
+{% endblock %}

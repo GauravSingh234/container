@@ -1,0 +1,18 @@
+<section class="card-section">
+    <h3>Card Content</h3>
+    <div class="card-wrapper">
+        {% for card in cards %}
+            <div class="card-item">
+                {% if card.image %}
+                    <img src="{{ card.image.url }}" alt="{{ card.title }}">
+                {% endif %}
+                <h4>{{ card.title }}</h4>
+                <p>{{ card.subtitle }}</p>
+                <p>{{ card.description }}</p>
+                {% if card.link %}
+                    <a href="{{ card.link }}">Read More</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</section>
