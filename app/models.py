@@ -50,7 +50,8 @@ class PageSection(models.Model):
 # Model 5: ContentContainer (to allow different types of content like Team, Slider, etc.)
 class ContentContainer(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE)
-    
+    order = models.PositiveIntegerField(default=0, help_text="The order of this section within the page")
+
     # This will point to different models dynamically.
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)  # Dynamic model reference
     object_id = models.PositiveIntegerField()  # ID of the object
@@ -58,6 +59,9 @@ class ContentContainer(models.Model):
 
     title = models.CharField(max_length=200, help_text="Title of the container")
     content = models.TextField(help_text="Content or HTML for the container")
+
+    class Meta:
+        ordering = ['order']
 
     def __str__(self):
         return f"{self.content_type.model} container in {self.page.title}"

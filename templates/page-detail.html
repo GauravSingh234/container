@@ -4,56 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+            color: #333;
+        }
+
+        .content-container {
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .blog, .card {
+            margin: 15px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
-    <h1>{{ page.title }}</h1>
+    <header>
+        <h1>{{ page.title }}</h1>
+    </header>
 
-    <div class="content-containers">
+    <main>
         {% for container in containers %}
             <div class="content-container">
                 <h2>{{ container.title }}</h2>
 
-                {% if container.content_type.model == 'teamsection' %}
+                {% if container.content_type.model == 'blog' %}
+                    <!-- Blog Section -->
+                    <div class="blog">
+                        <h3>{{ container.content_object.title }}</h3>
+                        <p>{{ container.content_object.description }}</p>
+                        <a href="{{ container.content_object.url }}">Read More</a>
+                    </div>
+
+                {% elif container.content_type.model == 'card' %}
+                    <!-- Card Section -->
+                    <div class="card">
+                        <h3>{{ container.content_object.title }}</h3>
+                        <p>{{ container.content_object.description }}</p>
+                    </div>
+
+                {% elif container.content_type.model == 'slider' %}
+                    <!-- Slider Section -->
+                    <div class="slider">
+                        <h3>{{ container.content_object.title }}</h3>
+                        <img src="{{ container.content_object.image.url }}" alt="{{ container.content_object.title }}">
+                        <p>{{ container.content_object.description }}</p>
+                    </div>
+
+                {% elif container.content_type.model == 'teamsection' %}
+                    <!-- Team Section -->
                     <div class="team-section">
                         <h3>Team Members</h3>
                         <ul>
-                            {% for team_section in container.content_object.team_sections.all %}
-                                <li>{{ team_section.title }}</li>
+                            {% for member in container.content_object.team_members.all %}
+                                <li>{{ member.name }}</li>
                             {% endfor %}
                         </ul>
                     </div>
-                {% elif container.content_type.model == 'slider' %}
-                 <!-- Slider Section -->
-    <section id="slider">
-        <h2>Slider</h2>
-        <div>
-            {% for slider in sliders %}
-                <div class="slider-item">
-                    <img src="{{ slider.image.url }}" alt="{{ slider.title }}">
-                    <h3>{{ slider.title }}</h3>
-                    <p>{{ slider.subtitle }}</p>
-                </div>
-            {% endfor %}
-        </div>
-    </section>
-                    <div class="slider">
-                        <h3>Slider Content</h3>
-                        <p>{{ container.content }}</p>
-                    </div>
-                {% elif container.content_type.model == 'gallery' %}
-                    <div class="gallery">
-                        <h3>Gallery</h3>
-                        <p>{{ container.content }}</p>
-                    </div>
-                {% elif container.content_type.model == 'image' %}
-                    <div class="image">
-                        <h3>Image Content</h3>
-                        <img src="{{ container.content }}" alt="Image">
-                    </div>
+
+                {% else %}
+                    <!-- Default Content -->
+                    <p>{{ container.content_object }}</p>
                 {% endif %}
             </div>
         {% endfor %}
-    </div>
-
+    </main>
 </body>
 </html>
